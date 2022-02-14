@@ -8,8 +8,6 @@ This repository contains the composer.json file of every Magento 2 release for t
 <RELEASE-VERSION>
 ├── git-tag
 │   └── composer.json
-├── install
-│   └── composer.json
 ├── magento2-base
 │   └── composer.json
 ├── product-community-edition
@@ -19,8 +17,6 @@ This repository contains the composer.json file of every Magento 2 release for t
 ```
 
 The **git-tag** directories contain the composer.json as tagged in the root of the magento/magento2 repository, for example <https://raw.githubusercontent.com/mage-os/mirror-magento2/2.4.1/composer.json>.
-
-The **install** directories contain the root comopser.json file as it is after installing Magento using `composer create-project --repository-url=https://repo.magento.com/ magento/project-community-edition $VERSION`.
 
 The **magento2-base** directories contain the `magento/magento2-base` package composer.json for the given tag.
 
