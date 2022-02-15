@@ -24,6 +24,20 @@ The **product-community-edition** directories contain the `magento/product-commu
 
 The **magento-community-projct** directories contain the `magento/project-community-edition` composer.json files for the given tag.
 
+## New Releases
+
+When a new version of Magento Open Source is tagged on https://github.com/magento/magento2 and the https://github.com/mage-os/mirror-magento2 is updated, run the commands
+
+```bash
+RELEASE=2.4.3-p2 # replace with the new release tag name
+./add-release.sh $RELEASE
+git add $RELEASE && git ci -m"Add release $RELEASE" && git push
+```
+
+It will download the composer packages and extract the composer.json files into the different directories.
+
+Be sure to list your Magento repository access keys in `~/.composer/auth.json`.
+
 
 ## Copyright
 
