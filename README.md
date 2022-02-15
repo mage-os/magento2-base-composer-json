@@ -1,6 +1,6 @@
 # Magento Open Source generated composer.json files
 
-This repository contains the composer.json file of every Magento 2 release for the magento/magento2-base package, the project composer.json, and the root composer.json for the given tag.
+This repository contains the composer.json file of every Magento 2 release for the magento/magento2 git root, the `magento/magento2-base` package, the `magento/project-community-edition` package, and the `magento/product-community-edition` metapackage.
 
 ## Directory Structure
 
