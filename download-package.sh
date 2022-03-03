@@ -1,32 +1,21 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-url="$1"
-output=file
+set -e
 
-[ "$url" == "--stdout" ] && {
-  url="$2"
-  output=stdout
+PACKAGE="$1"
+RELEASE="$2"
+
+hash=$(./download-package-url.sh --stdout https://repo.magento.com/packages.json | jq '.["provider-includes"]["p/provider-ce$%hash%.json"].sha256' | tr -d '"')
+packages=$(./download-package-url.sh --stdout "https://repo.magento.com/p/provider-ce\$$hash.json")
+
+packageProviderHash=$(echo "$packages" | jq '.providers["'$PACKAGE'"].sha256' | tr -d '"')
+url=$(./download-package-url.sh --gunzip "https://repo.magento.com/p/$PACKAGE\$$packageProviderHash.json" | jq ".packages[\"$PACKAGE\"][\"$RELEASE\"].dist.url" | tr -d '"')
+
+[[ "null" == "$url" ]] && {
+  echo [Error] No release found for $PACKAGE $RELEASE >&2
+  exit 2
 }
 
+./download-package-url.sh "$url"
+echo "$(basename "$url")"
 
-[ "$url" == "--gunzip" ] && {
-  url="$2"
-  output=gunzip
-}
-
-[ -z "$url" ] && {
-	echo "No package url specified" >&2
-	exit 1
-}
-
-username=$(jq '.["http-basic"]["repo.magento.com"].username' "$HOME/.composer/auth.json" | tr -d '"')
-password=$(jq '.["http-basic"]["repo.magento.com"].password' "$HOME/.composer/auth.json" | tr -d '"')
-
-
-if [ "$output" == "stdout" ]; then
-  curl -sS -A "composer-php/1.6.0" -u "$username:$password" $url
-elif [ "$output" == "gunzip" ]; then
-  curl -sS --output - -A "composer-php/1.6.0" -u "$username:$password" $url | gunzip
-else
-  curl -sSOL -A "composer-php/1.6.0" -u "$username:$password" $url
-fi
